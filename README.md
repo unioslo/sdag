@@ -69,28 +69,44 @@ $ cat > in2.txt
 This is the second input file
 ctrl+D
 ```
-2. Run the script:
+2. Run the script, and print the output file:
 ```bash
-python test.py in1.txt in2.txt outA.txt 30 A
-```
-The output ``outA.txt`` will contain the following:
-```
-Job[A] Run on machine: compute-10-16.local      Slept for 30 seconds
+$ python test.py in1.txt in2.txt out.txt 30 gift
+# the output file:
+$ cat out.txt
+
+Job[gift] Run on machine: compute-10-16.local      Slept for 30 seconds
 ---------------FILE in1.txt STARTED HERE---------------------
 This is the first input file
 ---------------FILE input.txt ENDED HERE-----------------------
 
-Job[A] Run on machine: compute-10-16.local      Slept for 30 seconds
+Job[gift] Run on machine: compute-10-16.local      Slept for 30 seconds
 ---------------FILE in2.txt STARTED HERE---------------------
 This is the second input file
 ---------------FILE input.txt ENDED HERE---------------------
 ```
-3. Submit the workflow:
-```
-sdag dagtest.sdag
-```
-You will get an output like the following:
-```
+3. Submit a simple job
+  
+3.a. Edit ``jobA.sbatch`` and set the correct account ``#SBATCH --account=<your-project-name>``
+  
+3.b. Submit the job:
+  ```bash
+  $ sbatch jobA.sbatch
+  ```
+3.c. Once the job is completed, check the output:
+  ```bash
+  cat outA.txt
+  Job[A] Run on machine: compute-15-9.local	Slept for 30 seconds
+  ---------------FILE input.txt STARTED HERE---------------------
+  This is a test text input file...
+  ---------------FILE input.txt ENDED HERE---------------------
+  ```
+4. Repeat 3.a for ``jobB.sbatch``, ``jobC.sbatch``, and ``jobD.sbatch``
+5. Load the sdag module and submit the workflow:
+```bash
+$ module load sdag
+$ sdag dagtest.sdag
+
 Job A   ID: 11008698
 Parents:
 Children: C,B
