@@ -37,7 +37,7 @@ Example 1
 --------
 This example is prepared to run on the [Abel Cluster](http://www.uio.no/english/services/it/research/hpc/abel/) at the [University of Oslo](www.uio.no).
 
-To submit a workflow with four jobs (A, B, C, and D) with the following structure:
+For submitting a workflow with four jobs (A, B, C, and D) with the following structure:
 ```  
            B
           / \
@@ -45,7 +45,7 @@ start--> A   D -->end
           \ /
            C
 ```
-Four jobs scripts are included: ``jobA.sbatch``, ``jobB.sbatch``, ``jobC.sbatch``, and ``jobD.sbatch``. The workflow description file is ``dag.sdag`` with the following contents:
+Four jobs scripts are included: ``jobA.sbatch``, ``jobB.sbatch``, ``jobC.sbatch``, and ``jobD.sbatch``. The workflow description file is ``dagtest.sdag`` with the following contents:
 ```
 JOB A jobA.sbatch
 JOB B jobB.sbatch
@@ -60,22 +60,32 @@ Each job is calling a python script ``test.py``, which takes the following argum
 * An integer indicating the runtime in seconds.
 * A job name.
 
-An example, having an input file ``input.txt`` with the following contents:
+1. Generate two input file:
+```bash
+$ cat > in1.txt
+This is the first input file
+ctrl+D
+$ cat > in2.txt
+This is the second input file
+ctrl+D
 ```
-This is a test text input file...
-```
-Then running:
-```
-python test.py input.txt outA.txt 30 A
+2. Run the script:
+```bash
+python test.py in1.txt in2.txt outA.txt 30 A
 ```
 The output ``outA.txt`` will contain the following:
 ```
 Job[A] Run on machine: compute-10-16.local      Slept for 30 seconds
----------------FILE input.txt STARTED HERE---------------------
-This is a test text input file...
+---------------FILE in1.txt STARTED HERE---------------------
+This is the first input file
+---------------FILE input.txt ENDED HERE-----------------------
+
+Job[A] Run on machine: compute-10-16.local      Slept for 30 seconds
+---------------FILE in2.txt STARTED HERE---------------------
+This is the second input file
 ---------------FILE input.txt ENDED HERE---------------------
 ```
-To submit the workflow, type:
+3. Submit the workflow:
 ```
 sdag dagtest.sdag
 ```
