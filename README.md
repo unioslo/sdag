@@ -71,7 +71,7 @@ ctrl+D
 ```
 2. Run the script, and print the output file:
 ```bash
-$ python test.py in1.txt in2.txt 30 out.txt gift
+$ python test.py in1.txt,in2.txt 30 out.txt gift
 # the output file:
 $ cat out.txt
 
